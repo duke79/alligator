@@ -1,4 +1,4 @@
-import feedparser  # https://pythonhosted.org/feedparser/introduction.html
+import feedparser # https://pythonhosted.org/feedparser/reference.html
 
 
 class Spider():
@@ -7,48 +7,29 @@ class Spider():
 
     def get_sources(self):
         return [
-            {
-                "title": "Opinion",
-                "site": "wsj.com",
-                "url": "http://www.wsj.com/xml/rss/3_7041.xml",
-                "found_at": "http://www.wsj.com/public/page/rss_news_and_feeds.html"
-            },
-            {
-                "title": "World News",
-                "site": "wsj.com",
-                "url": "http://www.wsj.com/xml/rss/3_7085.xml",
-                "found_at": "http://www.wsj.com/public/page/rss_news_and_feeds.html"
-            },
-            {
-                "title": "U.S. Business",
-                "site": "wsj.com",
-                "url": "http://www.wsj.com/xml/rss/3_7014.xml",
-                "found_at": "http://www.wsj.com/public/page/rss_news_and_feeds.html"
-            },
-            {
-                "title": "Technology: What's News",
-                "site": "wsj.com",
-                "url": "http://www.wsj.com/xml/rss/3_7455.xml",
-                "found_at": "http://www.wsj.com/public/page/rss_news_and_feeds.html"
-            },
-            {
-                "title": "Lifestyle",
-                "site": "wsj.com",
-                "url": "http://www.wsj.com/xml/rss/3_7201.xml",
-                "found_at": "http://www.wsj.com/public/page/rss_news_and_feeds.html"
-            },
-            {
-                "title": "Markets News",
-                "site": "wsj.com",
-                "url": "http://www.wsj.com/xml/rss/3_7031.xml",
-                "found_at": "http://www.wsj.com/public/page/rss_news_and_feeds.html"
-            }
+            "http://www.wsj.com/xml/rss/3_7041.xml",
+            # "http://www.wsj.com/xml/rss/3_7085.xml",
+            # "http://www.wsj.com/xml/rss/3_7014.xml",
+            # "http://www.wsj.com/xml/rss/3_7455.xml",
+            # "http://www.wsj.com/xml/rss/3_7201.xml",
+            # "http://www.wsj.com/xml/rss/3_7031.xml",
+            "http://rss.cnn.com/rss/edition.rss"
         ]
 
-    def parse_feed(self, url):
+    def parse_channel_by_url(self, url):
         data = feedparser.parse(url)
-        entries = data["entries"]
-        return entries
+        return data
+
+    def parse_all_channels(self):
+        """
+        This one is heavy.
+        :return:
+        """
+        channels = list()
+        for source in self.get_sources():
+            channel = self.parse_channel_by_url(source)
+            channels.append(channel)
+        return channels
 
     def get_all_feed(self):
         """
@@ -56,17 +37,11 @@ class Spider():
         :return:
         """
         feed = list()
-        for source in spider.get_sources():
+        for source in self.get_sources():
             try:
-                source_feed = spider.parse_feed(source["url"])
+                source_feed = self.parse_channel_by_url(source)
                 for elem in source_feed:
                     feed.append(elem)
             except Exception as e:
                 pass
         return feed
-
-
-spider = Spider()
-feed = spider.get_all_feed()
-
-print(feed)

@@ -6,16 +6,15 @@ import graphene
 
 from app.data import db
 from app.data.permissions import UserPermission
-from app.graph.news import News
-from app.graph.user import User
+from app.graph.channel import Channel
 
 
 class Query(graphene.ObjectType):
-    feed = graphene.List(News)
+    channels = graphene.List(Channel)
 
-    def resolve_feed(self, info):
-        if db.check_permission(UserPermission.ALL.value):
-            return [db.get_feed_by_id(i) for i in range(3)]
+    def resolve_channels(self, info):
+        channels = db.parse_all_channels()
+        return channels
 
 
 schema = graphene.Schema(query=Query)
