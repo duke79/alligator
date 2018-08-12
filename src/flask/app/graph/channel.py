@@ -2,15 +2,7 @@ import graphene
 
 from app.graph.newsitem import NewsItem
 from app.data import db
-
-
-def safeDict(elem, array_of_keys, default=""):
-    try:
-        for key in array_of_keys:
-            elem = elem[key]
-        return elem
-    except Exception as e:
-        return default
+from app.utils import safeDict
 
 
 class Channel(graphene.ObjectType):
