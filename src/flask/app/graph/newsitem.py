@@ -8,12 +8,13 @@ class NewsItem(graphene.ObjectType):
     link = graphene.String()
     description = graphene.String()
     author = graphene.String()
-    category = graphene.List(graphene.String)
+    category = graphene.List(graphene.String)  # TODO
     comments = graphene.List(graphene.String)
     enclusures = graphene.String()
     guid = graphene.String()
     pubDate = graphene.String()
     source = graphene.String()
+    media_content = graphene.List(graphene.String)  # TODO
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -48,3 +49,5 @@ class NewsItem(graphene.ObjectType):
     def resolve_source(self, info):
         return safeDict(self, ["source"])
 
+    def resolve_media_content(self, info):
+        return safeDict(self, ["media_content"])

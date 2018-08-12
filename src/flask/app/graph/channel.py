@@ -29,7 +29,7 @@ class Channel(graphene.ObjectType):
     textInput = graphene.Field(graphene.String)  # TODO
     skipHours = graphene.String()
     skipDays = graphene.String()
-    items = graphene.List(NewsItem)  # TODO
+    items = graphene.List(NewsItem)
 
     def resolve_title(self, info):
         return safeDict(self, ["feed", "title"])
