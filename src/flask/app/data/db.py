@@ -8,7 +8,10 @@ config = Config()
 
 class DB(metaclass=Singleton):
     def __init__(self):
-        self.firebase = Firebase()
+        try:
+            self.firebase = Firebase()
+        except FileNotFoundError as e:  # If serviceAccountKey is not provided
+            raise e
         self.mysql = MySQL()
         self.session = dict()
 

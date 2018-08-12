@@ -19,7 +19,7 @@
 -- Current Database: `yojaka`
 --
 
-CREATE DATABASE /*!32312 IF NOT EXISTS*/ `yojaka` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/ `a` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */;
 
 USE `yojaka`;
 

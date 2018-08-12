@@ -15,13 +15,19 @@ class Config(dict, metaclass=Singleton):
     def __init__(self):
         dict.__init__(self, dict())  # Because dict is extended
 
-        # Open <user>/.yojaka/config.json
+        # Open <user>/.alligator/config.json
         user_home = os.path.expanduser("~")
-        self.config_dir = os.path.join(user_home, ".yojaka")
+        self.config_dir = os.path.join(user_home, ".alligator")
         self.config_file = os.path.join(self.config_dir, "config.json")
 
-        if not os.path.exists(self.config_dir):
-            os.mkdir(self.config_dir)
+        # create config.json and initialize empty self.config
+        if not os.path.exists(self.config_file):
+            if not os.path.exists(self.config_dir):
+                os.mkdir(self.config_dir)  # Create directory
+            open(self.config_file, "a").close()  # Create empty file
+            self.config = dict()
+            self.initDefaults()  # Initialize with default values
+            self.commit()
 
         # initialize self.config from config.json
         with open(self.config_file, "r+") as f:
@@ -68,11 +74,9 @@ class Config(dict, metaclass=Singleton):
         with open(self.config_file, "w+") as f:
             json.dump(self.config, f, indent=4)
 
-
-if __name__ == "__main__":
-    with Config() as config:
-        config["server"] = "http://dummy_server:port"
-        config["database"] = {
+    def initDefaults(self):
+        self.config["server"] = "http://dummy_server:port"
+        self.config["database"] = {
             "mysql": {
                 "user": "dummy_user",
                 "host": "localhost",
@@ -83,6 +87,12 @@ if __name__ == "__main__":
                 "databaseURL": "https://dummy_db_url.firebaseio.com"
             }
         }
-        config["debug"] = False
+        self.config["debug"] = False
+        self.config["allowed_domains"] = ["http://1", "http://2"]
+
+
+if __name__ == "__main__":
+    with Config() as config:
+        pass
 
         # config.commit() #Not required, since we are using with*

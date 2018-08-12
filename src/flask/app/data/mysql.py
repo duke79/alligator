@@ -12,9 +12,9 @@ class MySQL():
 
         # Queries
         self.QUERY_CREATE_USER = "create user 'vilokanlabs'@'localhost' identified by '%s';" % (self.config["password"])
-        self.QUERY_GRANT_PERMISSION = "grant all privileges on yojaka.* to 'vilokanlabs'@'localhost' with grant option;"
-        self.QUERY_CREATE_DB = "CREATE DATABASE `yojaka`;"
-        self.QUERY_CHANGE_DB = "use yojaka;"
+        self.QUERY_GRANT_PERMISSION = "grant all privileges on alligator.* to 'vilokanlabs'@'localhost' with grant option;"
+        self.QUERY_CREATE_DB = "CREATE DATABASE `alligator`;"
+        self.QUERY_CHANGE_DB = "use alligator;"
         self.QUERY_CREATE_USER_TABLE = """
         CREATE TABLE `user` (
         `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -32,7 +32,7 @@ class MySQL():
         self.QUERY_SELECT_USERS_ALL = "select * from user;"
         self.QUERY_SELECT_USERS_10 = "select * from user limit 10;"
         self.QUERY_SELECT_USER_BY_FIREBASE_ID = "select * from user where `firebase_uid`='%s';"
-        self.QUERY_SELECT_ALL_TABLES = """select table_name from information_schema.tables where table_type="BASE TABLE" and table_schema="yojaka";"""
+        self.QUERY_SELECT_ALL_TABLES = """select table_name from information_schema.tables where table_type="BASE TABLE" and table_schema="alligator";"""
         self.QUERY_INSERT_USER = """INSERT INTO `user` (`name`, `phone_number`, `photo_url`, `email`, `firebase_uid`) VALUES ('%s', '%s', '%s', '%s', '%s');"""
         self.QUERY_UPDATE_USER_NAME = """UPDATE `user` SET `name`='%s' WHERE `id`=%s;"""
         self.QUERY_UPDATE_USER_PHONE_NUMBER = """UPDATE `user` SET `phone_number`='%s' WHERE `id`=%s;"""
