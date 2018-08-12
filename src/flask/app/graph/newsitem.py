@@ -1,38 +1,50 @@
 import graphene
 from app.data import db
+from app.utils import safeDict
+
 
 class NewsItem(graphene.ObjectType):
-    channel = graphene.String()
-    items = graphene.List(graphene.String)
-    guid = graphene.String()
-    date = graphene.String()
-    date_parsed = graphene.String()
+    title = graphene.String()
+    link = graphene.String()
     description = graphene.String()
-    description_detail = graphene.String()
-    url = graphene.String()
-    modified = graphene.String()
-    modified_parsed = graphene.String()
-    issued = graphene.String()
-    issued_parsed = graphene.String()
-    copyright = graphene.String()
-    copyright_detail = graphene.String()
-    tagline = graphene.String()
-    tagline_detail = graphene.String()
+    author = graphene.String()
+    category = graphene.List(graphene.String)
+    comments = graphene.List(graphene.String)
+    enclusures = graphene.String()
+    guid = graphene.String()
+    pubDate = graphene.String()
+    source = graphene.String()
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
     def resolve_title(self, info):
-        # feed_id = self["id"]
-        # feed = db.get_feed_by_id(feed_id)
-        return self["title"]
+        return safeDict(self, ["title"])
 
-    def resolve_picture(self, info):
-        # feed_id = self["id"]
-        # feed = db.get_feed_by_id(feed_id)
-        return self["media_content"][0]["url"]
+    def resolve_link(self, info):
+        return safeDict(self, ["link"])
 
-    def resolve_detail(self, info):
-        # feed_id = self["id"]
-        # feed = db.get_feed_by_id(feed_id)
-        return self["summary"]
+    def resolve_description(self, info):
+        return safeDict(self, ["summary"])
+
+    def resolve_author(self, info):
+        return safeDict(self, ["author_detail"])
+
+    def resolve_category(self, info):
+        return safeDict(self, ["tags"])
+
+    def resolve_comments(self, info):
+        return safeDict(self, ["comments"])
+
+    def resolve_enclusures(self, info):
+        return safeDict(self, ["comments"])
+
+    def resolve_guid(self, info):
+        return safeDict(self, ["id"])
+
+    def resolve_pubDate(self, info):
+        return safeDict(self, ["published"])
+
+    def resolve_source(self, info):
+        return safeDict(self, ["source"])
+
