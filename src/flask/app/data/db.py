@@ -50,16 +50,6 @@ class DB(metaclass=Singleton):
         user = cursor.fetchone()
         return user
 
-    def get_issues_by_project_id(self, project_id):
-        cursor = self.mysql.execute("select * from issues where project='%s';" % (project_id))
-        issues = cursor.fetchall()
-        return issues
-
-    def get_one_issue_by_project_and_count(self, project_id, count):
-        cursor = self.mysql.execute("select * from issues where project='%s' and count='%s';" % (project_id, count))
-        issue = cursor.fetchone()
-        return issue
-
     def check_permission(self, permission_bit, user_id=None):
         """
         :param permission_bit:
@@ -84,61 +74,9 @@ class DB(metaclass=Singleton):
 
         return ret
 
-    def get_issue_by_id(self, issue_id):
-        cursor = self.mysql.execute("select * from issues where id='%s';" % (issue_id))
-        issue = cursor.fetchone()
-        return issue
-
-    def create_issue(self, project_id, created_by_id, title="", description=""):
-        sql_query_project_counter = "(select issue_counter from project where id='%s')" % (project_id)
-
-        sql_query_insert_issue = "INSERT INTO issues (project, count, created_by_id, closed_by_id) " \
-                                 "VALUES ('%s', %s, '%s', %s);\n" \
-                                 % (project_id, sql_query_project_counter, created_by_id, None)
-
-        # Inser the new issue, update the project counter
-        self.mysql.execute("BEGIN;")
-        self.mysql.execute("UPDATE project SET issue_counter=issue_counter+1 WHERE id='%s'; \n" % (project_id))
-        self.mysql.execute(sql_query_insert_issue)
-        self.mysql.execute("COMMIT;")
-        self.mysql.commit()
-
-        # Select and return the latest issue in project
-        cursor = self.mysql.execute(
-            "select iss.* from issues as iss inner join project as proj on iss.project=proj.id where proj.owner='%s' and "
-            "iss.count=proj.issue_counter; "
-            % (created_by_id)
-        )
-        new_issue = cursor.fetchone()
-        return new_issue
-
-    def update_issue(self, project_id, count, updated_by_id, title="", state="", description="",
-                     discussion_locked=""):
-        issue = self.get_one_issue_by_project_and_count(project_id=project_id, count=count)
-
-        closed_by_id = issue["closed_by_id"]
-        closed_at = "\'" + str(issue["closed_at"]) + "\'"
-        if not title:
-            title = issue["title"]
-        if not state:
-            state = issue["state"]
-        elif state == "closed" and issue["state"] == "open":
-            closed_by_id = updated_by_id
-            closed_at = "now()"
-        if not description:
-            description = issue["description"]
-        if not discussion_locked:
-            discussion_locked = issue["discussion_locked"]
-
-        if True == discussion_locked:  # Converting into MySQL bit
-            discussion_locked = b'1'
-        else:
-            discussion_locked = b'0'
-
-        sql_query = "update issues set updated_by_id='%s', title='%s', state='%s', description='%s', " \
-                    "discussion_locked=%s, closed_by_id='%s', closed_at=%s where project='%s' and count='%s' " \
-                    % (updated_by_id, title, state, description,
-                       discussion_locked, closed_by_id, closed_at, project_id, count)
-        self.mysql.execute(sql_query)
-        self.mysql.commit()
-        return self.get_one_issue_by_project_and_count(project_id=project_id, count=count)
+    def get_feed_by_id(self, feed_id):
+        return {
+            "title": "This is the title of the feed",
+            "picture": "https://news.sky.com/assets/2018/sky-news-logo.png",
+            "detail": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+        }

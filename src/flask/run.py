@@ -6,4 +6,7 @@ config = Config()
 
 '''Run app'''
 CORS(app, origins=config["allowed_domains"])  # Allow cross-domain
-app.run(port=5000, debug=config["debug"])
+if config["debug"]:
+    app.run(port=5000, debug=True, host='0.0.0.0')
+else:
+    app.run(port=5000)
