@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.12, for Win64 (x86_64)
 --
--- Host: localhost    Database: yojaka
+-- Host: localhost    Database: alligator
 -- ------------------------------------------------------
 -- Server version	8.0.12
 
@@ -16,12 +16,12 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Current Database: `yojaka`
+-- Current Database: `alligator`
 --
 
-CREATE DATABASE /*!32312 IF NOT EXISTS*/ `a` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */;
+CREATE DATABASE IF NOT EXISTS `alligator` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */;
 
-USE `yojaka`;
+USE `alligator`;
 
 --
 -- Table structure for table `issues`

@@ -78,6 +78,7 @@ class Config(dict, metaclass=Singleton):
         self.config["server"] = "http://dummy_server:port"
         self.config["database"] = {
             "mysql": {
+                "db": "dummy_db",
                 "user": "dummy_user",
                 "host": "localhost",
                 "password": "dummy_password"
