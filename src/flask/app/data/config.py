@@ -75,7 +75,10 @@ class Config(dict, metaclass=Singleton):
             json.dump(self.config, f, indent=4)
 
     def initDefaults(self):
-        self.config["server"] = "http://dummy_server:port"
+        self.config["server"] = {
+            "host": "0.0.0.0",
+            "port": "80"
+        }
         self.config["database"] = {
             "mysql": {
                 "db": "dummy_db",
