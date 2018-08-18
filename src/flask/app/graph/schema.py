@@ -6,15 +6,21 @@ import graphene
 
 from app.data import db
 from app.data.permissions import UserPermission
+from app.graph.category import Category, Inputs
 from app.graph.channel import Channel
 
 
 class Query(graphene.ObjectType):
     channels = graphene.List(Channel)
+    categories = graphene.List(Category, inputs=graphene.Argument(Inputs, required=False, default_value={}))
 
     def resolve_channels(self, info):
         channels = db.parse_all_channels()
         return channels
+
+    def resolve_categories(self, info, inputs):
+        pass
+        return [{"title": "asd"}]
 
 
 schema = graphene.Schema(query=Query)
