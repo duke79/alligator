@@ -3,15 +3,15 @@ from app.data import db
 
 
 class ActionAddUserCategories(graphene.InputObjectType):
-    id = graphene.List(graphene.Int)
+    ids = graphene.List(graphene.Int)
 
 
 class ActionRemoveUserCategories(graphene.InputObjectType):
-    id = graphene.List(graphene.Int)
+    ids = graphene.List(graphene.Int)
 
 
 class ActionUpdateUserCategories(graphene.InputObjectType):
-    id = graphene.List(graphene.Int)
+    ids = graphene.List(graphene.Int)
 
 
 class ActionGetUserCategories(graphene.InputObjectType):
@@ -32,7 +32,9 @@ class User(graphene.ObjectType):
     """User class for graph"""
     name = graphene.String()
     email = graphene.String()
-    categories = graphene.List("app.graph.category.Category", action=graphene.Argument(UserCategoriesAction, required=False, default_value={}))
+    categories = graphene.List("app.graph.category.Category",
+                               action=graphene.Argument(UserCategoriesAction, required=False, default_value={}))
+    feed = graphene.List(graphene.String)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -46,3 +48,9 @@ class User(graphene.ObjectType):
         id = self["id"]
         user = db.get_user_by_id(id)
         return user["email"]
+
+    def resolve_categories(self, info, action):
+        return [""]  # TODO
+
+    def resolve_feed(self, info):
+        return [""]  # TODO

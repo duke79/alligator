@@ -41,15 +41,15 @@ class Category(graphene.ObjectType):
         super().__init__(*args, **kwargs)
 
     def resolve_id(self, info):
-        return 0
+        return 0  # TODO
 
     def resolve_title(self, info):
-        return "category_title"
+        return "category_title"  # TODO
 
     def resolve_channels(self, info):
         # channels = db.parse_all_channels()
         # return channels
-        return [""]
+        return [""]  # TODO
 
     def resolve_related_categories(self, info):
-        return [""]
+        return [""]  # TODO

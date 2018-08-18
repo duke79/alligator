@@ -14,17 +14,17 @@ from app.graph.user import User
 class Query(graphene.ObjectType):
     channels = graphene.List(Channel, action=graphene.Argument(ChannelsAction, required=False, default_value={}))
     categories = graphene.List(Category, action=graphene.Argument(CategoriesAction, required=False, default_value={}))
-    current_user = graphene.List(User)
+    current_user = graphene.Field(User)
 
-    def resolve_channels(self, info):
+    def resolve_channels(self, info, action):
         channels = db.parse_all_channels()
-        return channels
+        return channels  # TODO
 
-    def resolve_categories(self, info, inputs):
-        return [{"title": "asd"}]
+    def resolve_categories(self, info, action):
+        return [{"title": "asd"}]  # TODO
 
     def resolve_current_user(self, info):
-        return {}
+        return {}  # TODO
 
 
 schema = graphene.Schema(query=Query)
