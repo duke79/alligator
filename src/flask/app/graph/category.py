@@ -3,41 +3,36 @@ from app.data import db
 from app.utils import safeDict
 
 
-class Filter(graphene.InputObjectType):
-    all = graphene.Boolean(description="If True, all the existing categories are considered and "
-                                       "not just the categories already opted by the user. Default : False",
-                           default=False)
+class ActionAddCategory(graphene.InputObjectType):
+    title = graphene.String()
+
+
+class ActionRemoveCategory(graphene.InputObjectType):
+    id = graphene.Int()
+
+
+class ActionUpdateCategory(graphene.InputObjectType):
+    id = graphene.Int(required=True)
+    title = graphene.String()
+
+
+class ActionGetCategories(graphene.InputObjectType):
+    ids = graphene.List(graphene.Int, description="List of category ids to limit this action to.")
     query = graphene.String(description="To search categories by name.")
+    channel_id = graphene.Int()
+    limit = graphene.Int(default_value=10)
 
 
-class ListActions(graphene.Enum):
-    """
-    ADD - To add categories
-    REMOVE - To remove categories
-    SET - To force set the categories to the provided list, replacing existing categories
-    GET - To get categories, filtered by the provided filter (if provided)
-    """
-    ADD = 1
-    REMOVE = 2
-    SET = 3
-    GET = 4
-
-
-class Action(graphene.InputObjectType):
-    type = ListActions(description="Type of action",
-                       required=True)
-    ids = graphene.List(graphene.Int, description="List of category ids against which the action "
-                                                  "(ADD, REMOVE, SET) is to be performed.")
-    filter = Filter(description="To help filter the GET result. If not filter is provided, "
-                                "all categories opted by the user are returned.")
-
-
-class Inputs(graphene.InputObjectType):
-    action = graphene.Field(Action)
+class CategoriesAction(graphene.InputObjectType):
+    add = graphene.Field(ActionAddCategory)
+    update = graphene.Field(ActionUpdateCategory)
+    remove = graphene.Field(ActionRemoveCategory)
+    get = graphene.Field(ActionGetCategories)
 
 
 class Category(graphene.ObjectType):
     id = graphene.Int()
+    title = graphene.String()
     channels = graphene.List(
         'app.graph.channel.Channel')  # Circular solution: https://github.com/graphql-python/graphene/issues/522
     related_categories = graphene.List("app.graph.category.Category")
@@ -47,6 +42,9 @@ class Category(graphene.ObjectType):
 
     def resolve_id(self, info):
         return 0
+
+    def resolve_title(self, info):
+        return "category_title"
 
     def resolve_channels(self, info):
         # channels = db.parse_all_channels()
