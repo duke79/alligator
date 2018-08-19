@@ -27,7 +27,7 @@ def add_channel(url, categories=None):  # TODO : Handle categories
         })
 
 
-def remove_channel(id):  # TODO
+def remove_channel(id):
     with MySQL() as mysql:
         mysql.delete("channel", id)
 
@@ -50,11 +50,15 @@ def update_channel(id, url=None, categories=None):  # TODO : Handle categories
         }, "`id`=%s" % id)
 
 
-def get_channels(ids=None, category_id=None, match_in_url=None, limit=None):  # TODO : Get from DB?
-    channels = []
-    config = Config()
-    urls = config["rss_sources"]
-    for url in urls:
-        channel = feedparser.parse(url)
-        channels.append(channel)
-        return channels
+def get_channels(ids=None, category_id=None, match_in_url=None, limit=None):  # TODO : Add where clause, filters
+    # channels = []
+    # config = Config()
+    # urls = config["rss_sources"]
+    # for url in urls:
+    #     channel = feedparser.parse(url)
+    #     channels.append(channel)
+    #     return channels
+    with MySQL() as mysql:
+        cursor = mysql.execute("select * from `channel`;")
+        rows = cursor.fetchall()
+        return rows

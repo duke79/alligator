@@ -9,6 +9,7 @@ class ChannelSchema(graphene.ObjectType):
     RSS Ref: https://validator.w3.org/feed/docs/rss2.html
     feedparser Ref: # https://pythonhosted.org/feedparser/reference.html
     """
+    id = graphene.Int()
     title = graphene.String()
     link = graphene.String()
     description = graphene.String()
@@ -30,20 +31,28 @@ class ChannelSchema(graphene.ObjectType):
     skipDays = graphene.String()
     items = graphene.List(ArticleSchema)
 
+    def resolve_id(self, info):
+        return safeDict(self, ["id"])
+
     def resolve_title(self, info):
-        return safeDict(self, ["feed", "title"])
+        # return safeDict(self, ["feed", "title"])
+        return safeDict(self, ["title"])
 
     def resolve_link(self, info):
-        return safeDict(self, ["href"])
+        # return safeDict(self, ["href"])
+        return safeDict(self, ["link"])
 
     def resolve_description(self, info):
-        return safeDict(self, ["feed", "subtitle"])
+        # return safeDict(self, ["feed", "subtitle"])
+        return safeDict(self, ["description"])
 
     def resolve_language(self, info):
-        return safeDict(self, ["feed", "language"])
+        # return safeDict(self, ["feed", "language"])
+        return safeDict(self, ["language"])
 
     def resolve_copyright(self, info):
-        return safeDict(self, ["feed", "rights_detail"])
+        # return safeDict(self, ["feed", "rights_detail"])
+        return safeDict(self, ["copyright"])
 
     def resolve_managingEditor(self, info):
         return ""
