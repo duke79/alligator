@@ -3,10 +3,10 @@ from app.utils import safeDict
 
 
 def parse_categories_actions(action):
-    channels = []
+    categories = []
     action_add = safeDict(action, ["add"])
     if action_add:
-        add_category(url=safeDict(action_add, ["url"]))
+        add_category(title=safeDict(action_add, ["title"]))
 
     action_remove = safeDict(action, ["remove"])
     if action_remove:
@@ -15,13 +15,12 @@ def parse_categories_actions(action):
     action_update = safeDict(action, ["update"])
     if action_update:
         update_category(id=safeDict(action_update, ["id"]),
-                        url=safeDict(action_update, ["url"]),
-                        categories=safeDict(action_update, ["categories"]))
+                        title=safeDict(action_update, ["title"]))
 
     action_get = safeDict(action, ["get"])
     if action_get:
-        channels = get_categories(ids=safeDict(action_update, ["ids"]),
-                                  category_id=safeDict(action_update, ["category_id"]),
-                                  match_in_url=safeDict(action_update, ["match_in_url"]),
-                                  limit=safeDict(action_update, ["limit"]))
-    return channels
+        categories = get_categories(ids=safeDict(action_update, ["ids"]),
+                                    query=safeDict(action_update, ["query"]),
+                                    channel_id=safeDict(action_update, ["channel_id"]),
+                                    limit=safeDict(action_update, ["limit"]))
+    return categories
