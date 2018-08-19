@@ -1,1 +1,1 @@
-mysqldump -u root -p --databases alligator > mysql_db.sql
+mysqldump -u root -p --databases alligator > app\data\mysql_db.sql

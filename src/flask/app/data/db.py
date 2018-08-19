@@ -1,3 +1,5 @@
+import feedparser
+
 from app.data.config import Config
 from app.data.firebase import Firebase
 from app.data.mysql import MySQL
@@ -60,7 +62,7 @@ class DB(metaclass=Singleton):
         try:
             user_id = self.session["current_user"]["id"]
             cursor = self.mysql.execute(
-                "select * from permissions where permission_bit='%s' and user_id='%s'"
+                "select * from permission where permission_bit='%s' and user_id='%s'"
                 % (permission_bit, user_id)
             )
             permission = cursor.fetchone()
@@ -81,22 +83,3 @@ class DB(metaclass=Singleton):
             "detail": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
         }
 
-    def get_channel_by_url(self, url):
-        from app.data.spider import Spider
-        spider = Spider()
-        return spider.parse_channel_by_url(url)
-
-    def parse_all_channels(self):
-        from app.data.spider import Spider
-        spider = Spider()
-        return spider.parse_all_channels()
-
-    def get_all_feed(self):
-        from app.data.spider import Spider
-        spider = Spider()
-        return spider.get_all_feed()
-
-    def get_sources(self):
-        from app.data.spider import Spider
-        spider = Spider()
-        return spider.get_sources()
