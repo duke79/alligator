@@ -26,7 +26,7 @@ class UserSchema(graphene.ObjectType):
         return user["email"]
 
     def resolve_categories(self, info, action):
-        return parse_user_categories_actions(action)
+        return parse_user_categories_actions(action)  # TODO: User id must not come with action, but from session?
 
     def resolve_feed(self, info):
         return [""]  # TODO
