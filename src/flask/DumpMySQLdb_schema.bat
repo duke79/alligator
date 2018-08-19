@@ -1,1 +1,1 @@
-mysqldump -u root -p --skip-lock-tables --no-data --databases alligator > src\server\app\data\mysql_db_schema.sql
+mysqldump -u root -p --skip-lock-tables --no-data --databases alligator > app\data\mysql_db_schema.sql

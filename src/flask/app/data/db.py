@@ -60,7 +60,7 @@ class DB(metaclass=Singleton):
         try:
             user_id = self.session["current_user"]["id"]
             cursor = self.mysql.execute(
-                "select * from permissions where permission_bit='%s' and user_id='%s'"
+                "select * from permission where permission_bit='%s' and user_id='%s'"
                 % (permission_bit, user_id)
             )
             permission = cursor.fetchone()
