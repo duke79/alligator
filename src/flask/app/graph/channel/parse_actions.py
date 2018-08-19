@@ -20,8 +20,8 @@ def parse_channels_actions(action):
 
     action_get = safeDict(action, ["get"])
     if action_get:
-        channels = get_channels(ids=safeDict(action_update, ["ids"]),
-                                category_id=safeDict(action_update, ["category_id"]),
-                                match_in_url=safeDict(action_update, ["match_in_url"]),
-                                limit=safeDict(action_update, ["limit"]))
+        channels = get_channels(ids=safeDict(action_get, ["ids"]),
+                                category_id=safeDict(action_get, ["category_id"]),
+                                match_in_url=safeDict(action_get, ["match_in_url"]),
+                                limit=safeDict(action_get, ["limit"]))
     return channels

@@ -2,18 +2,25 @@ import graphene
 
 
 class ActionAddUserCategories(graphene.InputObjectType):
-    ids = graphene.List(graphene.Int)
+    user_id = graphene.Int(required=True)
+    category_ids = graphene.List(graphene.Int,
+                                 required=True)
 
 
 class ActionRemoveUserCategories(graphene.InputObjectType):
-    ids = graphene.List(graphene.Int)
+    user_id = graphene.Int(required=True)
+    category_ids = graphene.List(graphene.Int,
+                                 required=True)
 
 
 class ActionUpdateUserCategories(graphene.InputObjectType):
-    ids = graphene.List(graphene.Int)
+    user_id = graphene.Int(required=True)
+    category_ids = graphene.List(graphene.Int,
+                                 required=True)
 
 
 class ActionGetUserCategories(graphene.InputObjectType):
+    user_id = graphene.Int(required=True)
     ids = graphene.List(graphene.Int, description="List of category ids to limit this action to.")
     query = graphene.String(description="To search categories by name.")
     channel_id = graphene.Int()

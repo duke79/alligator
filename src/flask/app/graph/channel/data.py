@@ -25,11 +25,13 @@ def add_channel(url, categories=None):  # TODO : Handle categories
             "image": image,
             "copyright": r"%s" % copyright
         })
+        pass
 
 
 def remove_channel(id):
     with MySQL() as mysql:
-        mysql.delete("channel", id)
+        cursor = mysql.delete("channel", "`id`={0}".format(id))
+        pass
 
 
 def update_channel(id, url=None, categories=None):  # TODO : Handle categories
@@ -48,6 +50,7 @@ def update_channel(id, url=None, categories=None):  # TODO : Handle categories
             "image": image,
             "copyright": r"%s" % copyright
         }, "`id`=%s" % id)
+        pass
 
 
 def get_channels(ids=None, category_id=None, match_in_url=None, limit=None):  # TODO : Add where clause, filters

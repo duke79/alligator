@@ -1,6 +1,7 @@
 import graphene
 from app.data import db
 from app.graph.user.actions import UserCategoriesAction
+from app.graph.user.parse_actions import parse_user_categories_actions
 
 
 class UserSchema(graphene.ObjectType):
@@ -25,7 +26,7 @@ class UserSchema(graphene.ObjectType):
         return user["email"]
 
     def resolve_categories(self, info, action):
-        return [""]  # TODO
+        return parse_user_categories_actions(action)
 
     def resolve_feed(self, info):
         return [""]  # TODO
