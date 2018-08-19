@@ -6,7 +6,6 @@ from app.utils import safeDict
 
 
 def add_channel(url, categories=None):  # TODO : Handle categories
-    config = Config()
     with MySQL() as mysql:
         channel = feedparser.parse(url)
         title = safeDict(channel, ["feed", "title"])
@@ -33,8 +32,22 @@ def remove_channel(id):  # TODO
     pass
 
 
-def update_channel(id, url=None, categories=None):  # TODO
-    pass
+def update_channel(id, url=None, categories=None):  # TODO : Handle categories
+    with MySQL() as mysql:
+        channel = feedparser.parse(url)
+        title = safeDict(channel, ["feed", "title"])
+        language = safeDict(channel, ["feed", "language"])
+        image = safeDict(channel, ["feed", "image", "href"])
+        description = safeDict(channel, ["feed", "subtitle"])
+        copyright = safeDict(channel, ["feed", "rights_detail", "value"])
+        cursor = mysql.update("channel", {
+            "link": url,
+            "title": title,
+            "language": language,
+            "description": description,
+            "image": image,
+            "copyright": r"%s" % copyright
+        }, "`id`=%s" % id)
 
 
 def get_channels(ids=None, category_id=None, match_in_url=None, limit=None):  # TODO : Get from DB?

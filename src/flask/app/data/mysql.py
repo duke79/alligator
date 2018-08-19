@@ -104,6 +104,16 @@ class MySQL():
             raise e
         return self.cursor
 
+    def update(self, table, row, where):
+        """Ref: https://stackoverflow.com/questions/11363335/how-can-i-escape-the-input-to-a-mysql-db-in-python3"""
+        try:
+            values = ', '.join('`{0}`="{1}"'.format(key, value) for key, value in row.items())
+            sql = 'UPDATE `{0}` SET {1} WHERE {2}'.format(table, values, where)
+            self.cursor.execute(sql)
+        except Exception as e:
+            raise e
+        return self.cursor
+
     def commit(self):
         self.conn.commit()
 
