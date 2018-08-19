@@ -114,6 +114,14 @@ class MySQL():
             raise e
         return self.cursor
 
+    def delete(self, table, id):
+        try:
+            sql = "DELETE FROM `{0}` WHERE  `id`={1};".format(table, id)
+            self.cursor.execute(sql)
+        except Exception as e:
+            raise e
+        return self.cursor
+
     def commit(self):
         self.conn.commit()
 

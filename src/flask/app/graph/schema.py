@@ -5,7 +5,7 @@
 import graphene
 
 from app.data import db
-from app.data.channels_data import add_channel, remove_channel, update_channel, get_channels
+from app.data.channels import add_channel, remove_channel, update_channel, get_channels
 from app.data.permissions import UserPermission
 from app.graph.channel import Channel
 from app.graph.channels_action import ChannelsAction

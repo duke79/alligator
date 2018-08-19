@@ -25,11 +25,11 @@ def add_channel(url, categories=None):  # TODO : Handle categories
             "image": image,
             "copyright": r"%s" % copyright
         })
-        # row = cursor.fetchone()
 
 
 def remove_channel(id):  # TODO
-    pass
+    with MySQL() as mysql:
+        mysql.delete("channel", id)
 
 
 def update_channel(id, url=None, categories=None):  # TODO : Handle categories
