@@ -1,11 +1,14 @@
 {
-  "server": "http://dummy_server:port",
+  "server": {
+    "host": "0.0.0.0",
+    "port": "80"
+  },
   "database": {
     "mysql": {
-      "db":"alligator",
+      "db": "alligator",
       "user": "vilokanlabs",
       "host": "localhost",
-      "password": "<password>"
+      "password": "Dynamic.123"
     },
     "firebase": {
       "service_account_key": "C:\\Users\\Pulkit\\.yojaka\\serviceAccountKey.json",
@@ -16,6 +19,7 @@
   "allowed_domains": [
     "http://localhost:3000",
     "http://localhost:8100",
+    "http://192.168.1.105",
     "https://vilokanlabs-e8847.firebaseapp.com"
   ]
 }

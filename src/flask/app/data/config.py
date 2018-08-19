@@ -15,9 +15,10 @@ class Config(dict, metaclass=Singleton):
     def __init__(self):
         dict.__init__(self, dict())  # Because dict is extended
 
-        # Open <user>/.alligator/config.json
-        user_home = os.path.expanduser("~")
-        self.config_dir = os.path.join(user_home, ".alligator")
+        # Open src/flask/config/config.json
+        file_dir = os.path.abspath(__file__)
+        flask_dir = os.path.dirname(os.path.dirname(os.path.dirname(file_dir)))
+        self.config_dir = os.path.join(flask_dir, "config")
         self.config_file = os.path.join(self.config_dir, "config.json")
 
         # create config.json and initialize empty self.config
