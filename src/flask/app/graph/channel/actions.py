@@ -26,8 +26,9 @@ class ActionGetChannels(graphene.InputObjectType):
     limit = graphene.Int(default_value=10)
 
 
-class ChannelsAction(graphene.InputObjectType):
+class ChannelsActions(graphene.InputObjectType):
     add = graphene.Field(ActionAddChannel)
     remove = graphene.Field(ActionRemoveChannel)
     update = graphene.Field(ActionUpdateChannel)
     get = graphene.Field(ActionGetChannels)
+

@@ -3,12 +3,12 @@ from app.data import db
 from app.utils import safeDict
 
 
-class Category(graphene.ObjectType):
+class CategorySchema(graphene.ObjectType):
     id = graphene.Int()
     title = graphene.String()
     channels = graphene.List(
-        'app.graph.channel.Channel')  # Circular solution: https://github.com/graphql-python/graphene/issues/522
-    related_categories = graphene.List("app.graph.category.Category")
+        'app.graph.channel.schema.ChannelSchema')  # Circular solution: https://github.com/graphql-python/graphene/issues/522
+    related_categories = graphene.List("app.graph.category.schema.CategorySchema")
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

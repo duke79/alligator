@@ -1,11 +1,10 @@
 import graphene
 
-from app.graph.newsitem import NewsItem
-from app.data import db
+from app.graph.article.schema import ArticleSchema
 from app.utils import safeDict
 
 
-class Channel(graphene.ObjectType):
+class ChannelSchema(graphene.ObjectType):
     """
     RSS Ref: https://validator.w3.org/feed/docs/rss2.html
     feedparser Ref: # https://pythonhosted.org/feedparser/reference.html
@@ -29,7 +28,7 @@ class Channel(graphene.ObjectType):
     textInput = graphene.Field(graphene.String)  # TODO
     skipHours = graphene.String()
     skipDays = graphene.String()
-    items = graphene.List(NewsItem)
+    items = graphene.List(ArticleSchema)
 
     def resolve_title(self, info):
         return safeDict(self, ["feed", "title"])

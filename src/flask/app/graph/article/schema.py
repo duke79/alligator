@@ -3,7 +3,7 @@ from app.data import db
 from app.utils import safeDict
 
 
-class NewsItem(graphene.ObjectType):
+class ArticleSchema(graphene.ObjectType):
     title = graphene.String()
     link = graphene.String()
     description = graphene.String()
