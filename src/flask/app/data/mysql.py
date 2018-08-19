@@ -83,6 +83,7 @@ class MySQL():
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.commit()
+        self.close()
 
     def execute(self, query):
         try:
@@ -92,8 +93,22 @@ class MySQL():
             raise e
         return self.cursor
 
+    def insert(self, table, row):
+        """Ref: https://stackoverflow.com/questions/11363335/how-can-i-escape-the-input-to-a-mysql-db-in-python3"""
+        try:
+            cols = ', '.join('`{}`'.format(col) for col in row.keys())
+            vals = ', '.join('%({})s'.format(col) for col in row.keys())
+            sql = 'INSERT INTO `{0}` ({1}) VALUES ({2})'.format(table, cols, vals)
+            self.cursor.execute(sql, row)
+        except Exception as e:
+            raise e
+        return self.cursor
+
     def commit(self):
         self.conn.commit()
+
+    def close(self):
+        self.conn.close()
 
     def import_one_firebase_user(self, user, reimport=False):
         """" A user is imported only if it doesn't already exist in mysql """
