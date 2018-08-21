@@ -1,3 +1,4 @@
+from app.graph.category.data import get_categories
 from app.utils.feedly_client import FeedlyClient
 
 feedly = FeedlyClient(
@@ -6,6 +7,9 @@ feedly = FeedlyClient(
     sandbox=True
 )
 
-res = feedly.search("react", 100)
-res = res.json()
-pass
+for category in get_categories():
+    res = feedly.search(category["title"], 5).json()
+    for result in res["results"]:
+        tags = result["deliciousTags"]
+        url = result["feedId"][5:]
+
