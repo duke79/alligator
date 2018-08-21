@@ -7,9 +7,12 @@ from app.utils import safeDict
 
 def add_category(title):
     with MySQL() as mysql:
-        cursor = mysql.insert("category", {
-            "title": title,
-        })
+        try:
+            cursor = mysql.insert("category", {
+                "title": title,
+            })
+        except Exception as e:
+            print(e)
 
 
 def remove_category(id):

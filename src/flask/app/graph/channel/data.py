@@ -7,25 +7,28 @@ from app.utils import safeDict
 
 def add_channel(url, categories=None):  # TODO : Handle categories
     with MySQL() as mysql:
-        channel = feedparser.parse(url)
-        title = safeDict(channel, ["feed", "title"])
-        language = safeDict(channel, ["feed", "language"])
-        image = safeDict(channel, ["feed", "image", "href"])
-        description = safeDict(channel, ["feed", "subtitle"])
-        copyright = safeDict(channel, ["feed", "rights_detail", "value"])
-        # query = "INSERT INTO `channel` (`link`, `title`, `language`, `description`, `image`, `copyright`) " \
-        #         "VALUES (`%s`,`%s`,`%s`,`%s`,`%s`,`%s`);" \
-        #         % (url, title, language, description, image, copyright)
-        # cursor = mysql.execute(query)
-        cursor = mysql.insert("channel", {
-            "link": url,
-            "title": title,
-            "language": language,
-            "description": description,
-            "image": image,
-            "copyright": r"%s" % copyright
-        })
-        pass
+        try:
+            channel = feedparser.parse(url)
+            title = safeDict(channel, ["feed", "title"])
+            language = safeDict(channel, ["feed", "language"])
+            image = safeDict(channel, ["feed", "image", "href"])
+            description = safeDict(channel, ["feed", "subtitle"])
+            copyright = safeDict(channel, ["feed", "rights_detail", "value"])
+            # query = "INSERT INTO `channel` (`link`, `title`, `language`, `description`, `image`, `copyright`) " \
+            #         "VALUES (`%s`,`%s`,`%s`,`%s`,`%s`,`%s`);" \
+            #         % (url, title, language, description, image, copyright)
+            # cursor = mysql.execute(query)
+            cursor = mysql.insert("channel", {
+                "link": url,
+                "title": title,
+                "language": language,
+                "description": description,
+                "image": image,
+                "copyright": r"%s" % copyright
+            })
+            pass
+        except Exception as e:
+            print(e)
 
 
 def remove_channel(id):
