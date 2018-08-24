@@ -17,6 +17,8 @@ graphene = "*"
 pytest-benchmark = "*"
 flask-graphql = "*"
 feedparser = "*"
+sqlalchemy = "*"
+flask-sqlalchemy = "*"
 
 [dev-packages]
 
