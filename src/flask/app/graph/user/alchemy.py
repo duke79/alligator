@@ -3,7 +3,7 @@ from sqlalchemy.dialects.mysql import INTEGER
 
 
 class User(db.Model):
-    __tablename__ = 'person'
+    __tablename__ = 'user'
     id = db.Column(INTEGER(unsigned=True), primary_key=True, autoincrement=True, nullable=False)
     name = db.Column(db.String(200), nullable=True)
     phone_number = db.Column(db.String(50), nullable=True)
