@@ -14,10 +14,11 @@ class CategorySchema(graphene.ObjectType):
         super().__init__(*args, **kwargs)
 
     def resolve_id(self, info):
-        return safeDict(self, ["id"])
+        return self.id
 
     def resolve_title(self, info):
-        return safeDict(self, ["title"])
+        ret = self.title
+        return ret
 
     def resolve_channels(self, info):
         # channels = db.parse_all_channels()

@@ -1,7 +1,13 @@
-from app.graph.user.alchemy import User
-from app.graph.channel.alchemy import Channel
-from app.graph.category.alchemy import Category
 from app import db
+from app.data.tables.category import Category
+from app.data.tables.channel import Channel
+from app.data.tables.user import User
 
 if __name__ == "__main__":
+    """ Dummy instantiation """
+    category = Category()
+    channel = Channel()
+    user = User()
+
+    """ Initialize schema in mysql database """
     db.create_all()
