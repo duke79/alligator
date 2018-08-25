@@ -1,0 +1,24 @@
+from sqlalchemy import ForeignKey
+
+from app import db
+from sqlalchemy.dialects.mysql import INTEGER
+
+
+class Article(db.Model):
+    __tablename__ = 'article'
+    id = db.Column(INTEGER(unsigned=True), primary_key=True, autoincrement=True, nullable=False)
+    link = db.Column(db.String(760), nullable=True, unique=True,
+                     comment="Keeping it unique, assuming same url may not serve two distinct feeds")
+    title = db.Column(db.String(500), nullable=True)
+    language = db.Column(db.String(50), nullable=True)
+    description = db.Column(db.String(500), nullable=True)
+    image = db.Column(db.String(2013), nullable=True)
+    author = db.Column(db.String(100), nullable=True)
+    guid = db.Column(db.String(760), nullable=True, unique=True)
+    pubDate = db.Column(db.TIMESTAMP(), nullable=True)
+    source_channel_id = db.Column(INTEGER(unsigned=True), ForeignKey("channel.id"), nullable=True)
+    created_at = db.Column(db.TIMESTAMP(), nullable=False,
+                           server_default=db.text('CURRENT_TIMESTAMP'))
+    updated_at = db.Column(db.TIMESTAMP(), nullable=False,
+                           server_default=db.text('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'),
+                           )
