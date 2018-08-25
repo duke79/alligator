@@ -19,5 +19,5 @@ class User(db.Model):
                            server_default=db.text('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'),
                            )
 
-    # def __repr__(self):
-    #     return '<User %r>' % self.username
+    def __repr__(self):
+        return '<User %r>' % self.username
