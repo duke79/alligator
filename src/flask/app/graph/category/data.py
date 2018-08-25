@@ -19,4 +19,7 @@ def update_category(id, title):
 
 def get_categories(ids=None, query=None, channel_id=None, limit=None):  # TODO : Add where clause, filters
     ret = Category.query.all()
+    if query:
+        # https://stackoverflow.com/questions/16573095/case-insensitive-flask-sqlalchemy-query
+        ret = Category.query.filter(Category.title.ilike("%" + query + "%"))
     return ret
