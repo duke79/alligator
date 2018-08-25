@@ -93,6 +93,7 @@ class Config(dict, metaclass=Singleton):
             }
         }
         self.config["debug"] = False
+        self.config["stacktrace"] = False
         self.config["allowed_domains"] = ["http://1", "http://2"]
 
 

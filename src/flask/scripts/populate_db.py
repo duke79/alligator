@@ -35,15 +35,24 @@ def populate_articles():
         channel_id = channel.id
         channel = feedparser.parse(channel.link)
         for entry in safeDict(channel, ["entries"]):
-            image = safeDict(entry, ["media_content"])
-            if image:
-                if len(image) > 0:
-                    image = safeDict(image[0], ["url"])
-            pubDate = safeDict(entry, ["published_parsed"]),
-            if pubDate:
-                if len(pubDate) > 0:
-                    tub_date = pubDate[0]
-                    pubDate = datetime.fromtimestamp(mktime(tub_date))
+            image = None
+            try:
+                image = safeDict(entry, ["media_content"])
+                if image:
+                    if len(image) > 0:
+                        image = safeDict(image[0], ["url"])
+            except Exception as e:
+                print(e)
+            pubDate = None
+            try:
+                pubDate = safeDict(entry, ["published_parsed"]),
+                if pubDate:
+                    if len(pubDate) > 0:
+                        tub_date = pubDate[0]
+                        if len(tub_date) > 0:
+                            pubDate = datetime.fromtimestamp(mktime(tub_date))
+            except Exception as e:
+                print(e)
             article = Article(source_channel_id=channel_id,
                               link=safeDict(entry, ["link"]),
                               title=safeDict(entry, ["title"]),

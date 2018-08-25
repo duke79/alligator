@@ -16,6 +16,7 @@
     }
   },
   "debug": true,
+  "stacktrace": false,
   "allowed_domains": [
     "http://localhost:3000",
     "http://localhost:8100",

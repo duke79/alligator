@@ -1,3 +1,5 @@
+import traceback
+
 from sqlalchemy import create_engine
 from sqlalchemy.exc import DatabaseError
 from flask_sqlalchemy import Model
@@ -55,5 +57,10 @@ class AlchemyBase(Model):
             # db_session.refresh(self)
         except DatabaseError as e:
             db_session.rollback()
-            print(e)
+            config = Config()
+            if config["debug"]:
+                if config["stacktrace"]:
+                    print(traceback.format_exc())
+                else:
+                    print(e)
             raise
