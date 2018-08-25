@@ -1,0 +1,42 @@
+# Convert JSON to YAML | https://www.json2yaml.com/
+---
+# Every test file has one or more tests...
+test_name: Test category actions
+
+# ...and each test has one or more stages (e.g. an HTTP request)
+stages:
+- name: Get categories matching "new" in the title
+
+  # Define the request to be made...
+  request:
+    url: http://localhost/graph
+    method: POST
+    json:
+      query: "{{categories(action: {{get: {{query:\"new\"}} }}) {{title id}} }}"
+
+  # ...and the expected response code and body
+  response:
+    status_code: 200
+    body:
+      data:
+        categories:
+        - title: "news"
+          id: 1
+        - title: "entertainment"
+          id: 2
+        - title: "culture"
+          id: 3
+        - title: "opinion"
+          id: 4
+        - title: "economy"
+          id: 5
+        - title: "india"
+          id: 6
+        - title: "javascript"
+          id: 7
+        - title: "programming"
+          id: 8
+        - title: "react"
+          id: 9
+        - title: "tech"
+          id: 10

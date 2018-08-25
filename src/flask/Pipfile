@@ -19,6 +19,9 @@ flask-graphql = "*"
 feedparser = "*"
 sqlalchemy = "*"
 flask-sqlalchemy = "*"
+tavern = {version = "*", extras = ["pytest"]}
+pyjwt = "*"
+pyopenssl = "*"
 
 [dev-packages]
 
