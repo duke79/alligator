@@ -31,8 +31,11 @@ class AlchemyBase(Model):
     def save(self):
         local_object = db_session.merge(self)
         db_session.add(local_object)
-        self._flush()
-        db_session.commit()
+        try:
+            self._flush()
+            db_session.commit()
+        except DatabaseError:
+            return None
         return self
 
     def update(self, **kwargs):
@@ -49,6 +52,8 @@ class AlchemyBase(Model):
     def _flush(self):
         try:
             db_session.flush()
-        except DatabaseError:
+            # db_session.refresh(self)
+        except DatabaseError as e:
             db_session.rollback()
+            print(e)
             raise

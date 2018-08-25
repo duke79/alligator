@@ -1,8 +1,10 @@
 import feedparser
+from sqlalchemy.exc import DatabaseError
 
 from app import db_session
 from app.data.config import Config
 from app.data.mysql import MySQL
+from app.data.tables.article import Article
 from app.data.tables.channel import Channel
 from app.utils import safeDict
 
@@ -21,7 +23,7 @@ def add_channel(url, categories=None):  # TODO : Handle categories
                       image=image,
                       description=description,
                       copyright=copyright)
-    channel.save()
+    return channel.save()
 
 
 def remove_channel(id):
@@ -55,5 +57,8 @@ def get_channels(ids=None, category_id=None, match_in_url=None, limit=None):  # 
     :param limit:
     :return:
     """
-    ret = Channel.query.filter(Channel.link.like("%" + match_in_url + "%")).limit(limit)
+    ret = Channel.query
+    if match_in_url:
+        ret = ret.filter(Channel.link.like("%" + match_in_url + "%"))
+    ret = ret.limit(limit)
     return ret
