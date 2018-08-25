@@ -19,8 +19,8 @@ def parse_categories_actions(action):
 
     action_get = safeDict(action, ["get"])
     if action_get:
-        categories = get_categories(ids=safeDict(action_update, ["ids"]),
-                                    query=safeDict(action_update, ["query"]),
-                                    channel_id=safeDict(action_update, ["channel_id"]),
-                                    limit=safeDict(action_update, ["limit"]))
+        categories = get_categories(ids=safeDict(action_get, ["ids"]),
+                                    query=safeDict(action_get, ["query"]),
+                                    channel_id=safeDict(action_get, ["channel_id"]),
+                                    limit=safeDict(action_get, ["limit"]))
     return categories

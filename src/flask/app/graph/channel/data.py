@@ -1,67 +1,64 @@
 import feedparser
+from sqlalchemy.exc import DatabaseError
 
+from app import db_session
 from app.data.config import Config
 from app.data.mysql import MySQL
+from app.data.tables.article import Article
+from app.data.tables.channel import Channel
 from app.utils import safeDict
 
 
 def add_channel(url, categories=None):  # TODO : Handle categories
-    with MySQL() as mysql:
-        channel = feedparser.parse(url)
-        title = safeDict(channel, ["feed", "title"])
-        language = safeDict(channel, ["feed", "language"])
-        image = safeDict(channel, ["feed", "image", "href"])
-        description = safeDict(channel, ["feed", "subtitle"])
-        copyright = safeDict(channel, ["feed", "rights_detail", "value"])
-        # query = "INSERT INTO `channel` (`link`, `title`, `language`, `description`, `image`, `copyright`) " \
-        #         "VALUES (`%s`,`%s`,`%s`,`%s`,`%s`,`%s`);" \
-        #         % (url, title, language, description, image, copyright)
-        # cursor = mysql.execute(query)
-        cursor = mysql.insert("channel", {
-            "link": url,
-            "title": title,
-            "language": language,
-            "description": description,
-            "image": image,
-            "copyright": r"%s" % copyright
-        })
-        pass
+    channel = feedparser.parse(url)
+    title = safeDict(channel, ["feed", "title"])
+    language = safeDict(channel, ["feed", "language"])
+    image = safeDict(channel, ["feed", "image", "href"])
+    description = safeDict(channel, ["feed", "subtitle"])
+    copyright = safeDict(channel, ["feed", "rights_detail", "value"])
+    copyright = r"%s" % copyright
+    channel = Channel(link=url,
+                      title=title,
+                      language=language,
+                      image=image,
+                      description=description,
+                      copyright=copyright)
+    return channel.save()
 
 
 def remove_channel(id):
-    with MySQL() as mysql:
-        cursor = mysql.delete("channel", "`id`={0}".format(id))
-        pass
+    res = Channel.query.filter_by(id=id).first()
+    res.delete()
 
 
 def update_channel(id, url=None, categories=None):  # TODO : Handle categories
-    with MySQL() as mysql:
-        channel = feedparser.parse(url)
-        title = safeDict(channel, ["feed", "title"])
-        language = safeDict(channel, ["feed", "language"])
-        image = safeDict(channel, ["feed", "image", "href"])
-        description = safeDict(channel, ["feed", "subtitle"])
-        copyright = safeDict(channel, ["feed", "rights_detail", "value"])
-        cursor = mysql.update("channel", {
-            "link": url,
-            "title": title,
-            "language": language,
-            "description": description,
-            "image": image,
-            "copyright": r"%s" % copyright
-        }, "`id`=%s" % id)
-        pass
+    channel = feedparser.parse(url)
+    title = safeDict(channel, ["feed", "title"])
+    language = safeDict(channel, ["feed", "language"])
+    image = safeDict(channel, ["feed", "image", "href"])
+    description = safeDict(channel, ["feed", "subtitle"])
+    copyright = safeDict(channel, ["feed", "rights_detail", "value"])
+    copyright = r"%s" % copyright
+    res = Channel.query.filter_by(id=id).first()
+    res.update(link=url,
+               title=title,
+               language=language,
+               image=image,
+               description=description,
+               copyright=copyright)
 
 
 def get_channels(ids=None, category_id=None, match_in_url=None, limit=None):  # TODO : Add where clause, filters
-    # channels = []
-    # config = Config()
-    # urls = config["rss_sources"]
-    # for url in urls:
-    #     channel = feedparser.parse(url)
-    #     channels.append(channel)
-    #     return channels
-    with MySQL() as mysql:
-        cursor = mysql.execute("select * from `channel`;")
-        rows = cursor.fetchall()
-        return rows
+    """
+    Ref: https://stackoverflow.com/questions/3332991/sqlalchemy-filter-multiple-columns
+    :param ids:
+    :param category_id:
+    :param match_in_url:
+    :param limit:
+    :return:
+    """
+    ret = Channel.query
+    if match_in_url:
+        ret = ret.filter(Channel.link.like("%" + match_in_url + "%"))
+    ret = ret.limit(limit)
+    return ret

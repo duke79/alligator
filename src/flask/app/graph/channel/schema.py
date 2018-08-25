@@ -32,27 +32,27 @@ class ChannelSchema(graphene.ObjectType):
     items = graphene.List(ArticleSchema)
 
     def resolve_id(self, info):
-        return safeDict(self, ["id"])
+        return self.id
 
     def resolve_title(self, info):
         # return safeDict(self, ["feed", "title"])
-        return safeDict(self, ["title"])
+        return self.title
 
     def resolve_link(self, info):
         # return safeDict(self, ["href"])
-        return safeDict(self, ["link"])
+        return self.link
 
     def resolve_description(self, info):
         # return safeDict(self, ["feed", "subtitle"])
-        return safeDict(self, ["description"])
+        return self.description
 
     def resolve_language(self, info):
         # return safeDict(self, ["feed", "language"])
-        return safeDict(self, ["language"])
+        return self.language
 
     def resolve_copyright(self, info):
         # return safeDict(self, ["feed", "rights_detail"])
-        return safeDict(self, ["copyright"])
+        return self.copyright
 
     def resolve_managingEditor(self, info):
         return ""
@@ -61,34 +61,34 @@ class ChannelSchema(graphene.ObjectType):
         return ""
 
     def resolve_pubDate(self, info):
-        return safeDict(self, ["feed", "published"])
+        return safeDict(self, ["feed", "published"])  # TODO?
 
     def resolve_publisher(self, info):
-        return safeDict(self, ["entries", "publisher"])
+        return safeDict(self, ["entries", "publisher"])  # TODO?
 
     def resolve_lastBuildDate(self, info):
         return ""
 
     def resolve_category(self, info):
-        return safeDict(self, ["feed", "categories"])
+        return safeDict(self, ["feed", "categories"])  # TODO?
 
     def resolve_generator(self, info):
-        return safeDict(self, ["feed", "generator_detail", "name"])
+        return safeDict(self, ["feed", "generator_detail", "name"])  # TODO?
 
     def resolve_docs(self, info):
-        return safeDict(self, ["feed", "docs"])
+        return safeDict(self, ["feed", "docs"])  # TODO?
 
     def resolve_cloud(self, info):
-        return safeDict(self, ["feed", "cloud"])
+        return safeDict(self, ["feed", "cloud"])  # TODO?
 
     def resolve_ttl(self, info):
-        return safeDict(self, ["feed", "ttl"])
+        return safeDict(self, ["feed", "ttl"])  # TODO?
 
     def resolve_image(self, info):
-        return safeDict(self, ["feed", "image", "href"])
+        return safeDict(self, ["feed", "image", "href"])  # TODO?
 
     def resolve_textInput(self, info):
-        return safeDict(self, ["feed", "textinput"])
+        return safeDict(self, ["feed", "textinput"])  # TODO?
 
     def resolve_skipHour(self, info):
         return ""
@@ -97,4 +97,4 @@ class ChannelSchema(graphene.ObjectType):
         return ""
 
     def resolve_items(self, info):
-        return safeDict(self, ["entries"])
+        return safeDict(self, ["entries"])  # TODO?
