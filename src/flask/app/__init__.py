@@ -2,29 +2,32 @@
 
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
 
 from app.data.config import Config
+from app.data.tables.alchemy_base import AlchemyBase, db_uri, db_session
 
 """ App """
 ## Init app
 app = Flask(__name__)
+
 ## Init SQLAlchemy
-def create_session(engine):
-    engine = create_engine(db_uri)
-    Session = sessionmaker(bind=engine)
-    session = Session()
-    session._model_changes = {}
-    return session
-config = Config()["database"]["mysql"]
-db_uri = "mysql+pymysql://{0}:{1}@{2}:3306/{3}" \
-    .format(config["user"], config["password"], config["host"], config["db"])
-# db_uri = "sqlite:///sqlalchemy_example.db"
 app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
-db = SQLAlchemy(app)
-db_session = create_session(db.engine)
+db = SQLAlchemy(app, model_class=AlchemyBase)
 # db.create_all() # No use until the model classes are imported. Use scripts.create_db_schema instead.
+
+# @app.after_request
+# def session_commit(response):
+#     """
+#     Ref: https://chase-seibert.github.io/blog/2016/03/31/flask-sqlalchemy-sessionless.html
+#     """
+#     if response.status_code >= 400:
+#         return
+#     try:
+#         db_session.commit()
+#     except DatabaseError:
+#         db_session.rollback()
+#         raise
+#     # session.remove() is called for you by flask-sqlalchemy
 
 """ Views """
 from app.views import graph  # /graph
