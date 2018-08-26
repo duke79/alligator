@@ -1,5 +1,9 @@
 import graphene
 from app.data import db
+from app.data.tables.category import Category
+from app.data.tables.channel import Channel
+from app.data.tables.channel_categories import ChannelCategories
+from app.graph.category.schema import CategorySchema
 from app.utils import safeDict
 
 
@@ -9,7 +13,7 @@ class ArticleSchema(graphene.ObjectType):
     link = graphene.String()
     description = graphene.String()
     author = graphene.String()
-    category = graphene.List(graphene.String)  # TODO
+    categories = graphene.List(CategorySchema)  # TODO
     comments = graphene.List(graphene.String)
     enclusures = graphene.String()
     guid = graphene.String()
@@ -35,8 +39,10 @@ class ArticleSchema(graphene.ObjectType):
     def resolve_author(self, info):
         return safeDict(self, ["author_detail"])
 
-    def resolve_category(self, info):
-        return safeDict(self, ["category"])
+    def resolve_categories(self, info):
+        channel_id = safeDict(self, ["channel"])
+        categories = Channel.session().query(Category).join(ChannelCategories).join(Channel).filter(Channel.id == channel_id).all()
+        return categories
 
     def resolve_comments(self, info):
         return safeDict(self, ["comments"])

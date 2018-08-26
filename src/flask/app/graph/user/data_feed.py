@@ -13,7 +13,8 @@ from app.utils import safeDict
 from app.utils.traces import print_exception_traces
 
 
-def get_user_feed(user_id, sort_by=None, sort_order=None, limit=None):
+def get_user_feed(user_id, sort_by=None, sort_order=None, limit=None):  # TODO: Sort again! :(
+    # Ref | row number - over partition | https://stackoverflow.com/questions/38160213/filter-by-row-number-in-sqlalchemy
     # user_feed = Article.session().query(Article)
     # if sort_by:
     #     for counter, sort_field in enumerate(sort_by):
@@ -38,7 +39,7 @@ def get_user_feed(user_id, sort_by=None, sort_order=None, limit=None):
         user_feed = mysql.execute("""
         select * from
         (
-        select article.id, article.link, article.title as article, channel.title as channel, category.title as category, row_number() over (partition by category.title) as r from article 
+        select article.id, article.link, article.title as article, channel.id as channel, category.title as category, row_number() over (partition by category.title) as r from article 
         inner join channel on article.source_channel_id=channel.id 
         inner join channel_categories on channel_categories.channel_id=channel.id 
         inner join category on channel_categories.category_id=category.id
@@ -49,7 +50,7 @@ def get_user_feed(user_id, sort_by=None, sort_order=None, limit=None):
         group by article.id
         order by article.id desc, category.title desc
         ) as main
-        where main.r < 5
-        """).fetchall()
+        where main.r < {0}
+        """.format(limit)).fetchall()
 
     return user_feed
