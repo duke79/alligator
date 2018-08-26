@@ -4,6 +4,7 @@ from app.utils import safeDict
 
 
 class ArticleSchema(graphene.ObjectType):
+    id = graphene.Int()
     title = graphene.String()
     link = graphene.String()
     description = graphene.String()
@@ -19,8 +20,11 @@ class ArticleSchema(graphene.ObjectType):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
+    def resolve_id(self, info):
+        return self.id
+
     def resolve_title(self, info):
-        return safeDict(self, ["title"])
+        return self.title
 
     def resolve_link(self, info):
         return safeDict(self, ["link"])

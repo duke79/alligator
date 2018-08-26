@@ -1,4 +1,4 @@
-from app.graph.user.data import get_user_categories, update_user_categories, remove_user_categories, add_user_categories
+from app.graph.user.data_categories import get_user_categories, update_user_categories, remove_user_categories, add_user_categories
 from app.utils import safeDict
 
 
