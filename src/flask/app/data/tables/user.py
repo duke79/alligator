@@ -1,3 +1,4 @@
+from sqlalchemy.orm import relationship
 from sqlalchemy.sql import expression
 
 from app import db
@@ -21,6 +22,7 @@ class User(db.Model):
     updated_at = db.Column(db.TIMESTAMP(), nullable=False,
                            server_default=db.text('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'),
                            )
+    # children = relationship("user_categories")
 
     def __repr__(self):
         return '<User %r>' % self.username

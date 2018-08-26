@@ -63,3 +63,7 @@ class AlchemyBase(Model):
             db_session.rollback()
             print_exception_traces(e)
             raise
+
+    @staticmethod
+    def session():
+        return db_session
