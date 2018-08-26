@@ -6,6 +6,7 @@ from flask_sqlalchemy import Model
 from sqlalchemy.orm import sessionmaker
 
 from app import Config
+from app.utils.traces import print_exception_traces
 
 
 def create_session(db_uri):
@@ -33,12 +34,15 @@ class AlchemyBase(Model):
     def save(self):
         local_object = db_session.merge(self)
         db_session.add(local_object)
-        try:
-            self._flush()
-            db_session.commit()
-        except DatabaseError:
-            return None
-        return self
+        # try:
+        self._flush()
+        db_session.commit()
+        # except DatabaseError as e:
+        #     code = e.orig.args[0]
+        #     if code == 1062:
+        #         raise
+        #     return None
+        return local_object
 
     def update(self, **kwargs):
         for attr, value in kwargs.items():
@@ -57,10 +61,5 @@ class AlchemyBase(Model):
             # db_session.refresh(self)
         except DatabaseError as e:
             db_session.rollback()
-            config = Config()
-            if config["debug"]:
-                if config["stacktrace"]:
-                    print(traceback.format_exc())
-                else:
-                    print(e)
+            print_exception_traces(e)
             raise

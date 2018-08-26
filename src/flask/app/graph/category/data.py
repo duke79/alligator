@@ -1,10 +1,18 @@
+from sqlalchemy.exc import DatabaseError
+
 from app.data.mysql import MySQL
 from app.data.tables.category import Category
 
 
 def add_category(title):
     category = Category(title=title)
-    category.save()
+    try:
+        return category.save()
+    except DatabaseError as e:
+        code = e.orig.args[0]
+        if code == 1062:
+            return Category.query.filter(Category.title==title).first()
+        return None
 
 
 
