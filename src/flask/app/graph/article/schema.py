@@ -21,10 +21,10 @@ class ArticleSchema(graphene.ObjectType):
         super().__init__(*args, **kwargs)
 
     def resolve_id(self, info):
-        return self.id
+        return safeDict(self, ["id"])
 
     def resolve_title(self, info):
-        return self.title
+        return safeDict(self, ["article"])
 
     def resolve_link(self, info):
         return safeDict(self, ["link"])
@@ -36,7 +36,7 @@ class ArticleSchema(graphene.ObjectType):
         return safeDict(self, ["author_detail"])
 
     def resolve_category(self, info):
-        return safeDict(self, ["tags"])
+        return safeDict(self, ["category"])
 
     def resolve_comments(self, info):
         return safeDict(self, ["comments"])
