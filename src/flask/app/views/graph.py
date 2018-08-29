@@ -8,6 +8,7 @@ from app import app
 
 config = Config()
 
+
 def graph_view():
     session = None
     try:
@@ -22,7 +23,15 @@ def graph_view():
         return jsonify("Invalid session"), 400
 
 
-app.add_url_rule('/graph', view_func=graph_view, methods=["POST"])
+def graph_view_temp():
+    """
+    TODO: Session management will be necessary. graph_view() can be used as reference.
+    """
+    view = GraphQLView.as_view('graph', schema=schema, graphiql=True)
+    return view()
+
+
+app.add_url_rule('/graph', view_func=graph_view_temp, methods=["POST"])
 
 # Optional, for adding batch query support (used in Apollo-Client)
 # app.add_url_rule('/graphql/batch', view_func=GraphQLView.as_view('graphql', schema=schema, batch=True))
