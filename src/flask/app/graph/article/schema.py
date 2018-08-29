@@ -13,7 +13,7 @@ class ArticleSchema(graphene.ObjectType):
     link = graphene.String()
     description = graphene.String()
     author = graphene.String()
-    categories = graphene.List(CategorySchema)  # TODO
+    category = graphene.String()
     comments = graphene.List(graphene.String)
     enclusures = graphene.String()
     guid = graphene.String()
@@ -39,10 +39,10 @@ class ArticleSchema(graphene.ObjectType):
     def resolve_author(self, info):
         return safeDict(self, ["author_detail"])
 
-    def resolve_categories(self, info):
-        channel_id = safeDict(self, ["channel"])
-        categories = Channel.session().query(Category).join(ChannelCategories).join(Channel).filter(Channel.id == channel_id).all()
-        return categories
+    def resolve_category(self, info):
+        category = safeDict(self, ["category"])
+        # categories = Channel.session().query(Category).join(ChannelCategories).join(Channel).filter(Channel.id == channel_id).all()
+        return category
 
     def resolve_comments(self, info):
         return safeDict(self, ["comments"])
