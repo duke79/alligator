@@ -1,7 +1,10 @@
+import os
+
 import firebase_admin
 from firebase_admin import credentials, db, auth
 
 from app.data.config import Config
+from app.utils.paths import Paths
 from app.utils.singleton import Singleton
 
 
@@ -11,7 +14,7 @@ class Firebase(metaclass=Singleton):
         # Set credentials
         ## serviceAccountKey (if rquired) to be generated from firebase -> Project Settings -> Service Accounts -> Generate new private key
         config = Config()["database"]["firebase"]
-        cred = credentials.Certificate(config["service_account_key"])
+        cred = credentials.Certificate(os.path.join(Paths.flask_root(), "config/serviceAccountKey.json"))
 
         # Init app
         app = firebase_admin.initialize_app(cred, {
