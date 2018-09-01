@@ -15,7 +15,7 @@
       "databaseURL": "https://vilokanlabs-e8847.firebaseio.com"
     }
   },
-  "debug": true,
+  "debug": false,
   "stacktrace": false,
   "allowed_domains": [
     "http://localhost:3000",

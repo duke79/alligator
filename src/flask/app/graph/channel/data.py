@@ -6,6 +6,7 @@ from app.data.config import Config
 from app.data.mysql import MySQL
 from app.data.tables.article import Article
 from app.data.tables.channel import Channel
+from app.data.tables.channel_categories import ChannelCategories
 from app.utils import safeDict
 
 
@@ -23,7 +24,20 @@ def add_channel(url, categories=None):  # TODO : Handle categories
                       image=image,
                       description=description,
                       copyright=copyright)
-    return channel.save()
+    try:
+        ret = channel.save()
+        # ret = Channel.query.filter(Channel.title == title).first()
+        for category in categories:
+            channelCategory = ChannelCategories(category_id=category,
+                                                  channel_id=ret.id)
+            channelCategory.save()
+        return ret
+    except DatabaseError as e:
+        code = e.orig.args[0]
+        if code == 1062:
+            ret = Channel.query.filter(Channel.link == url).first()
+            return ret
+        return None
 
 
 def remove_channel(id):

@@ -1,3 +1,4 @@
 *.pyc
 *.pytest_cache
 *.*___jb_tmp___
+/.idea/*

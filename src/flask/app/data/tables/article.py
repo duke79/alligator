@@ -3,6 +3,8 @@ from sqlalchemy import ForeignKey
 from app import db
 from sqlalchemy.dialects.mysql import INTEGER
 
+from app.data.tables.channel import Channel
+
 
 class Article(db.Model):
     __tablename__ = 'article'
@@ -16,7 +18,7 @@ class Article(db.Model):
     author = db.Column(db.String(100), nullable=True)
     guid = db.Column(db.String(760), nullable=True, unique=True)
     pubDate = db.Column(db.TIMESTAMP(), nullable=True)
-    source_channel_id = db.Column(INTEGER(unsigned=True), ForeignKey("channel.id"), nullable=True)
+    source_channel_id = db.Column(INTEGER(unsigned=True), ForeignKey(Channel.id), nullable=True)
     created_at = db.Column(db.TIMESTAMP(), nullable=False,
                            server_default=db.text('CURRENT_TIMESTAMP'))
     updated_at = db.Column(db.TIMESTAMP(), nullable=False,
