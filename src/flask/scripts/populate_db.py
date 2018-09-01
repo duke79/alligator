@@ -83,6 +83,6 @@ def populate_categories(channels_per_category=5,
 
 if __name__ == "__main__":
     populate_categories(withChannels=True,
-                        withArticles=False,
+                        withArticles=True,
                         channels_per_category=1)
     # populate_articles()

@@ -27,6 +27,8 @@ def graph_view_temp():
     """
     TODO: Session management will be necessary. graph_view() can be used as reference.
     """
+    client_ip = request.remote_addr
+    print("client: " + str(client_ip))
     view = GraphQLView.as_view('graph', schema=schema, graphiql=True)
     return view()
 
