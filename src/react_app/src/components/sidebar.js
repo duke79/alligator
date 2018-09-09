@@ -57,14 +57,11 @@ class Sidebar extends Component {
                 <Separator label="BOARDS"/>
                 <div style={{"height": "26px"}}/>
                 <Row name="integrations"
-                     label="Integrations"
-                     isFontBold="true"/>
+                     label="Integrations"/>
                 <Row name="share_collections"
-                     label="Share Collections"
-                     isFontBold="true"/>
+                     label="Share Collections"/>
                 <Row name="support"
-                     label="Support"
-                     isFontBold="true"/>
+                     label="Support"/>
             </div>
             <div className={style["bottom"]}>
                 ADD CONTENT
