@@ -28,13 +28,13 @@ class ArticleSchema(graphene.ObjectType):
         return safeDict(self, ["id"])
 
     def resolve_title(self, info):
-        return safeDict(self, ["article"])
+        return safeDict(self, ["title"])
 
     def resolve_link(self, info):
         return safeDict(self, ["link"])
 
     def resolve_description(self, info):
-        return safeDict(self, ["summary"])
+        return safeDict(self, ["description"])
 
     def resolve_author(self, info):
         return safeDict(self, ["author_detail"])
@@ -60,4 +60,4 @@ class ArticleSchema(graphene.ObjectType):
         return safeDict(self, ["source"])
 
     def resolve_media_content(self, info):
-        return safeDict(self, ["media_content"])
+        return [safeDict(self, ["media_content"])]

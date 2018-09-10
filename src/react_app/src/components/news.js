@@ -5,19 +5,22 @@ import style from "./news.css";
 import {Query} from "react-apollo";
 import gql from "graphql-tag";
 
-function Entry({id, title, summary, visual}) {
-    return <div id={id} className={style["row"]}>
-        <img className={style["entry_visual"]}
-             src={visual}/>
-        <div className={style["entry_content"]}>
-            <div className={style["entry_title"]}>
-                {title}
-            </div>
-            <div className={style["entry_summary"]}>
-                {summary}
+function Entry({id, title, summary, visual, link}) {
+    return <a href={link}>
+        {/*<div id={id} className={style["row"]} onClick={() => window.location = link}>*/}
+        <div id={id} className={style["row"]}>
+            <img className={style["entry_visual"]}
+                 src={visual[0]}/>
+            <div className={style["entry_content"]}>
+                <div className={style["entry_title"]}>
+                    {title}
+                </div>
+                <div className={style["entry_summary"]}>
+                    {summary}
+                </div>
             </div>
         </div>
-    </div>;
+    </a>
 }
 
 const Entries = () => (
@@ -25,13 +28,12 @@ const Entries = () => (
         query={gql`
           {
           currentUser {
-            feed(action: {get: {userId: 1, sortBy: [CATEGORY], sortOrder: [false], limit: 4}}) {
+            feed(action: {get: {userId: 1, sortBy: [CATEGORY], sortOrder: [false], limit: 40}}) {
               title
               category
               description
-              source
-              pubDate
               mediaContent
+              link
             }
           }
         }
@@ -44,14 +46,14 @@ const Entries = () => (
                                                   title,
                                                   category,
                                                   description,
-                                                  source,
-                                                  pubDate,
-                                                  mediaContent
+                                                  mediaContent,
+                                                  link
                                               }, i) => (
                 <Entry id={"entry_" + i}
                        title={title}
-                       summary=""
-                       visual={mediaContent}/>
+                       summary={description}
+                       visual={mediaContent}
+                       link={link}/>
             ));
         }}
     </Query>
