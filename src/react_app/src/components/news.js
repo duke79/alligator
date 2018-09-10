@@ -2,6 +2,9 @@ import {Component} from "react";
 import React from "react";
 import style from "./news.css";
 
+import {Query} from "react-apollo";
+import gql from "graphql-tag";
+
 function Entry({id, title, summary, visual}) {
     return <div id={id} className={style["row"]}>
         <img className={style["entry_visual"]}
@@ -17,31 +20,49 @@ function Entry({id, title, summary, visual}) {
     </div>;
 }
 
-function Entries({entries}) {
-    return entries.map(function (entry, i) {
-        return <Entry id={"entry_" + i}
-                      title={entry.title}
-                      summary={entry.summary}
-                      visual={entry.visual}/>
-    });
-}
+const Entries = () => (
+    <Query
+        query={gql`
+          {
+          currentUser {
+            feed(action: {get: {userId: 1, sortBy: [CATEGORY], sortOrder: [false], limit: 4}}) {
+              title
+              category
+              description
+              source
+              pubDate
+              mediaContent
+            }
+          }
+        }
+   `}>
+        {({loading, error, data}) => {
+            if (loading) return <p>Loading...</p>;
+            if (error) return <p>Error :(</p>;
+
+            return data.currentUser.feed.map(({
+                                                  title,
+                                                  category,
+                                                  description,
+                                                  source,
+                                                  pubDate,
+                                                  mediaContent
+                                              }, i) => (
+                <Entry id={"entry_" + i}
+                       title={title}
+                       summary=""
+                       visual={mediaContent}/>
+            ));
+        }}
+    </Query>
+);
 
 class News extends Component {
     render() {
         return <div>
-            <Entries entries={this.props.entries}/>
+            <Entries/>
         </div>
     }
-}
-
-News.defaultProps = {
-    entries: [
-        {
-            title: "Study: Nike online sales surge 31 percent days after Colin Kaepernick ad released",
-            summary: "Research conducted by Edison Trends revealed that Nike's online sales surged 31 percent Sunday through Tuesday, after Colin Kaepernick ad was out.",
-            visual: "https://lh3.googleusercontent.com/MoTnyWgGPdu-Bg-uu5dD2lwjGb5M3IZa9uDyvf-fnj_V5_c6gWZmA3viYT04SpZZE7vfLHX2RNob6mMPODiTGqlh8g=s163"
-        }
-    ]
 }
 
 export default News;
