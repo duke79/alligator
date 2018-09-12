@@ -60,6 +60,20 @@ const Entries = () => (
 );
 
 class News extends Component {
+    constructor(props) {
+        super(props);
+
+        //https://stackoverflow.com/questions/5060389/how-do-you-know-the-scroll-bar-has-reached-bottom-of-a-page
+        window.onscroll = () => {
+            if (
+                window.innerHeight + document.documentElement.scrollTop
+                > document.documentElement.scrollHeight-1
+            ) {
+                console.log("reached end");
+            }
+        };
+    }
+
     render() {
         return <div>
             <Entries/>

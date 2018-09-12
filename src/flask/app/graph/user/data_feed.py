@@ -1,4 +1,5 @@
 import feedparser
+from sqlalchemy import func
 from sqlalchemy.exc import DatabaseError
 
 from app.data.config import Config
@@ -13,7 +14,7 @@ from app.utils import safeDict
 from app.utils.traces import print_exception_traces
 
 
-def get_user_feed(user_id, sort_by=None, sort_order=None, limit=None):  # TODO: Sort again! :(
+def get_user_feed(user_id, sort_by=None, sort_order=None, limit=10, offset=10):  # TODO: Sort again! :(
     # Ref | row number - over partition | https://stackoverflow.com/questions/38160213/filter-by-row-number-in-sqlalchemy
     # user_feed = Article.session().query(Article)
     # if sort_by:
@@ -35,6 +36,10 @@ def get_user_feed(user_id, sort_by=None, sort_order=None, limit=None):  # TODO: 
     # # user_categories = user_categories.filter(UserCategories.user_id == user_id)
     # user_feed = user_feed.limit(limit)
 
+    nbr_user_categories = UserCategories.session().query(func.count(UserCategories.id)).filter(
+        UserCategories.user_id == user_id).scalar()
+    limit_per_category = limit / nbr_user_categories
+
     with MySQL() as mysql:
         user_feed = mysql.execute("""
         select * from
@@ -52,12 +57,12 @@ def get_user_feed(user_id, sort_by=None, sort_order=None, limit=None):  # TODO: 
         inner join category on channel_categories.category_id=category.id
         inner join user_categories on user_categories.category_id=category.id
         inner join user on user_categories.user_id=user.id
-        where category.id in (select category.id from category inner join user_categories on user_categories.category_id=category.id where user_categories.user_id=1 order by category.title desc)
+        where category.id in (select category.id from category inner join user_categories on user_categories.category_id=category.id where user_categories.user_id={0} order by category.title desc)
         #where category.id=19
         group by article.id
         order by article.id desc, category.title desc
         ) as main
-        where main.r < {0}
-        """.format(limit+1)).fetchmany(limit)
+        where main.r < {1} limit {2} offset {3} 
+        """.format(user_id, limit_per_category, limit, offset)).fetchall()
 
     return user_feed
