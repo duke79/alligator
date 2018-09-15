@@ -16,6 +16,7 @@ class ActionGetFeed(graphene.InputObjectType):
     sort_order = graphene.List(graphene.Boolean,
                                description="order list mapped with sort_by. True for ascending order, False for descending")
     limit = graphene.Int(default_value=10)
+    offset = graphene.Int(default_value=0)
 
 
 class UserFeedAction(graphene.InputObjectType):

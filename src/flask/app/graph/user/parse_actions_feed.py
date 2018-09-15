@@ -9,5 +9,6 @@ def parse_user_feed_actions(action):
         feed = get_user_feed(user_id=safeDict(action_get, ["user_id"]),
                              sort_by=safeDict(action_get, ["sort_by"]),
                              sort_order=safeDict(action_get, ["sort_order"]),
-                             limit=safeDict(action_get, ["limit"]))
+                             limit=safeDict(action_get, ["limit"]),
+                             offset=safeDict(action_get, ["offset"]))
     return feed
