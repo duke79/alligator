@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import style from './App.css';
 import Sidebar from "./components/sidebar";
 import News from "./components/news"
+import {BrowserRouter, Route} from "react-router-dom";
+import Admin from "./components/admin";
 
 class App extends Component {
     render() {
@@ -13,7 +15,12 @@ class App extends Component {
                         <h1 className={style["title"]}>Today</h1>
                         <h1 className={style["sub"]}>The insights you need</h1>
                         <div style={{"height": "36px"}}/>
-                        <News/>
+                        <BrowserRouter>
+                            <div>
+                                <Route exact path="/" component={News}/>
+                                <Route exact path="/admin" component={Admin}/>
+                            </div>
+                        </BrowserRouter>
                     </div>
                 </div>
             </div>
