@@ -78,6 +78,7 @@ def populate_categories(channels_per_category=5,
             if withChannels or withArticles:
                 channel = add_channel(url, categories=categories)
                 if withArticles and channel:
+                    print(safeDict(channel, ["link"]))
                     populate_articles_from_channel(channel)
 
 
