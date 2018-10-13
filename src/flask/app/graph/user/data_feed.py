@@ -54,3 +54,11 @@ def get_user_feed(user_id, sort_by=None, sort_order=None, limit=None):  # TODO: 
         """.format(limit)).fetchall()
 
     return user_feed
+
+
+def mark_article_read():
+    pass
+
+
+def mark_article_seen():
+    pass
