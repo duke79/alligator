@@ -8,7 +8,6 @@ from app.data.tables.channel import Channel
 
 class Article(db.Model):
     __tablename__ = 'article'
-    id = db.Column(INTEGER(unsigned=True), primary_key=True, autoincrement=True, nullable=False)
     link = db.Column(db.String(760), nullable=True, unique=True,
                      comment="Keeping it unique, assuming same url may not serve two distinct feeds")
     title = db.Column(db.String(500), nullable=True)
@@ -19,8 +18,3 @@ class Article(db.Model):
     guid = db.Column(db.String(760), nullable=True, unique=True)
     pubDate = db.Column(db.TIMESTAMP(), nullable=True)
     source_channel_id = db.Column(INTEGER(unsigned=True), ForeignKey(Channel.id), nullable=True)
-    created_at = db.Column(db.TIMESTAMP(), nullable=False,
-                           server_default=db.text('CURRENT_TIMESTAMP'))
-    updated_at = db.Column(db.TIMESTAMP(), nullable=False,
-                           server_default=db.text('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'),
-                           )
