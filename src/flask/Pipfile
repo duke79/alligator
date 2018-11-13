@@ -24,6 +24,7 @@ pyjwt = "*"
 pyopenssl = "*"
 gunicorn = "*"
 gdom = "*"
+fire = "*"
 
 [dev-packages]
 

@@ -50,6 +50,7 @@ class DB(metaclass=Singleton):
     def get_user_by_id(self, id):
         cursor = self.mysql.execute("select * from user where id='%s';" % (id))
         user = cursor.fetchone()
+        cursor.fetchall()
         return user
 
     def check_permission(self, permission_bit, user_id=None):
