@@ -3,6 +3,7 @@ import sys
 
 import fire
 from app.data.db import DB
+from app.data.tables.user import User
 
 db = DB()
 
@@ -15,8 +16,8 @@ class Users():
     def __init__(self):
         pass
 
-    def name(self, id):
-        ret = db.get_user_by_id(id)
+    def get(self, id):
+        ret = User.query.filter(User.id == id).all()
         json_dump(ret)
 
 

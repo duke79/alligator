@@ -5,6 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 from app.data.config import Config
 from app.data.tables.alchemy_base import AlchemyBase, db_uri, db_session
+from flask_migrate import Migrate
 
 config = Config()
 
@@ -18,6 +19,8 @@ if config["debug"]:
     app.config['SQLALCHEMY_ECHO'] = True
 db = SQLAlchemy(app, model_class=AlchemyBase)
 # db.create_all() # No use until the model classes are imported. Use scripts.create_db_schema instead.
+from .data.tables import *
+migrate = Migrate(app, db)
 
 # @app.after_request
 # def session_commit(response):
